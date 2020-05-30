@@ -37,7 +37,11 @@ function start(){
                 "View All Employees by Department", 
                 "View All Employees by Manager",
                 "Add Employee",
+                "Add Department",
+                "Add Role",
                 "Remove Employee",
+                "Remove Role",
+                "Remove Department",
                 "Update Employee Role",
                 "Update Employee Manger",
                 "EXIT"
@@ -56,8 +60,16 @@ function start(){
                     return employeesByManager();
                 case "Add Employee":
                     return addEmployee();
+                case "Add Department":
+                    return addDepartment();
+                case "Add Role":
+                    return addRole();
                 case "Remove Employee":
                     return removeEmployee();
+                case "Remove Role":
+                    return removeRole();
+                case "Remove Department":
+                    return removeDepartment();
                 case "Update Employee Role":
                     return updateRole();
                 case "Update Employee Manger":
@@ -155,6 +167,72 @@ function addEmployee(){
     
 };
 
+function addRole(){
+    connection.query("SELECT * FROM department", function(err,res){
+        if (err) throw err;
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "title",
+                message: "What is the title of this new role?"
+            },
+            {
+                type: "number",
+                name: "salary",
+                message: "What is the salary expectation for this role?"
+            },
+            {
+                type: "list",
+                name: "department_id",
+                message: "Which department does this role belong to??",
+                choices: res.map((department) => {
+                    return {
+                        name: department.name,
+                        value: department.id
+                    };
+                })
+            }
+        ])
+        .then(function(res){
+            console.log(res);
+            connection.query(
+                "INSERT INTO role SET ?",
+                [{
+                    title: res.title,
+                    salary: res.salary,
+                    department_id: res.department_id,
+                }],
+                function (err,res){
+                    if (err) throw err
+                    console.log("The role was added!")
+                    start();
+                });
+        });
+    });
+};
+
+function addDepartment(){
+    inquirer.prompt(
+        {
+            type: "input",
+            name: "name",
+            message: "What is the name of this new department?"
+        })
+    .then(function(res){
+        console.log(res);
+        connection.query(
+            "INSERT INTO department SET ?",
+            [{
+                name: res.name,
+            }],
+            function (err,res){
+                if (err) throw err
+                console.log("The department was added!")
+                start();
+            });
+    });
+}
+
 function employeesByDepartment(){
     connection.query("SELECT * FROM department", function(err,res){
         if (err) throw err;
@@ -225,6 +303,53 @@ function removeEmployee(){
             connection.query(query,[res], function(err,res){
                 if (err) throw err;
                 console.table("Great! " + res.affectedRows + " employee was deleted");
+                start();
+            });
+        });
+    });
+};
+function removeRole(){
+    connection.query("SELECT * FROM role", function(err, res){
+        if (err) throw err;
+        inquirer.prompt({
+            type: "list",
+            name: "id",
+            message: "Which role would you like to remove from the company?",
+            choices: res.map((role) => {
+                return {
+                    name: role.title,
+                    value: role.id
+                };
+            })
+        }).then(function(res){
+            let query = "DELETE FROM role WHERE ?"
+            connection.query(query,[res], function(err,res){
+                if (err) throw err;
+                console.table("Great! " + res.affectedRows + " role was deleted");
+                start();
+            });
+        });
+    });
+};
+
+function removeDepartment(){
+    connection.query("SELECT * FROM department", function(err, res){
+        if (err) throw err;
+        inquirer.prompt({
+            type: "list",
+            name: "id",
+            message: "Which role would you like to remove from the company?",
+            choices: res.map((department) => {
+                return {
+                    name: department.name,
+                    value: department.id
+                };
+            })
+        }).then(function(res){
+            let query = "DELETE FROM department WHERE ?"
+            connection.query(query,[res], function(err,res){
+                if (err) throw err;
+                console.table("Great! " + res.affectedRows + " department was deleted");
                 start();
             });
         });
@@ -317,6 +442,6 @@ function updateManager(){
 }
 
 function exit(){
-    connection.end
+    connection.end();
     console.log("You've ended your session, please enter 'node employee-tracker.js' in the command line to start another session.")
 };

@@ -32,8 +32,8 @@ The spec for this application was provided by my boot camp's curriculums. I was 
 2. Utilize the `schema.sql` file to set up your database in mysql (for testing purposes, there is a `seed.sql` file available to inset data into your database.)
 3. Create a `.gitignore` file (include your node_modules and DS_Store for mac users)
 4. Copy `.env.sample` into a file called `.env`
-5. make sure that `.env` is included in your `.gitignore` file
-6. change the environment variables to match your environment. In this case, you need your mysql connection password
+5. Make sure that `.env` is included in your `.gitignore` file
+6. Change the environment variables to match your environment. In this case, you need your mysql connection password
 
 # User Story
 ```
@@ -42,19 +42,31 @@ SO that when I need to add, view, update, or delete employee information while t
 ```
 # Acceptance Criteria
 ```
-GIVEN a weather dashboard with form inputs
-WHEN I search for a city
-THEN I am presented with current and future conditions for that city and that city is added to the search history
-WHEN I view current weather conditions for that city
-THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
-WHEN I view the UV index
-THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
-WHEN I view future weather conditions for that city
-THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
-WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city
-WHEN I open the weather dashboard
-THEN I am presented with the last searched city forecast
+USER is presented with choices
+WHEN the user selects to view all employees in their organization
+THEN the user is presented with a table view of all employees
+WHEN the user selects to view all employees by department
+THEN the user is presented with all the departments available to chose from
+THEN the user is presented with a table view of all the employees in the department they selected
+WHEN the user selects to view all employees by manager
+THEN the user is presented with all the employees available to chose from
+THEN the user is presented with a table view of all the employees in the manager they selected
+WHEN the user selects to add an employee
+THEN the user is prompted by a series of questions that will create a new employee
+WHEN the user selects to add a role
+THEN the user is prompted by a series of questions that will create a new role 
+WHEN the user selects to add an department
+THEN the user is prompted by a series of questions that will create a new department 
+WHEN the user selects to update an employee's role
+THEN the user is prompted by a series of questions that will update the employee's role
+WHEN the user selects to update an employee's manager
+THEN the user is prompted by a series of questions that will update the employee's manager
+WHEN the user selects to remove an employee form the company
+THEN the user is presented a list of employees to select from and remove the selected employee form the company
+WHEN the user selects to remove an role form the company
+THEN the user is presented a list of roles to select from and remove the selected role form the company
+WHEN the user selects to remove a department form the company
+THEN the user is presented a list of departments to select from and remove the selected department form the company
 ```
 
 # How to use
